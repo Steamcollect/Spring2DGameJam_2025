@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class PlantManager : MonoBehaviour
 {
-    [Header("Settings")]
+    [Header("Movement")]
     [SerializeField] float growSpeed;
     [SerializeField] float ungrowSpeed;
 
@@ -31,10 +31,16 @@ public class PlantManager : MonoBehaviour
         }
     }
 
-    [Space(10)]
+    [Header("Visual")]
     [SerializeField] float zigzagAmplitude = .1f;
     [SerializeField] float zigzagFrequency = 1;
     [SerializeField] float zigzagSpeed = 2;
+
+    [Space(10)]
+    [SerializeField] Color startColor;
+    [SerializeField] Color endColor;
+
+    [SerializeField] Color outlineColor;
 
     [Header("References")]
     [SerializeField] LineRenderer mainRenderer;
@@ -58,6 +64,10 @@ public class PlantManager : MonoBehaviour
 
     private void Start()
     {
+        mainRenderer.material.color = startColor;
+        outlineRenderer.material.color = outlineColor;
+        
+
         pathPoints.Add(new PathPoint(startingPoint.position, 0));
         mainRenderer.positionCount = 1;
         mainRenderer.SetPosition(0, startingPoint.position);
@@ -200,6 +210,8 @@ public class PlantManager : MonoBehaviour
 
         outlineRenderer.SetPosition(outlineRenderer.positionCount - 1, currentPoint);
         mainRenderer.SetPosition(mainRenderer.positionCount - 1, currentPoint);
+
+        mainRenderer.material.color = Color.Lerp(startColor, endColor, currentDist / maxDistance);
     }
 
     Vector3[] GetPathPointPositions()
