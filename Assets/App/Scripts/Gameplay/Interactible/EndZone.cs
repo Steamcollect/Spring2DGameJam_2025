@@ -5,13 +5,13 @@ public class EndZone : Triggerable
 {
     [SerializeField, SceneName] string levelToLoad;
 
-    public override void OnPlantEnter()
+    private void Awake()
     {
-        SceneManager.LoadScene(levelToLoad);
+        OnPlantEnter += OnEnter;
     }
 
-    public override void OnPlantExit()
+    public void OnEnter()
     {
-        // Do nothing
+        SceneManager.LoadScene(levelToLoad);
     }
 }

@@ -202,14 +202,22 @@ public class PlantManager : MonoBehaviour
 
     void _OnTriggerEnter2D(Collider2D col)
     {
-        if (col.TryGetComponent(out Triggerable triggerable)) triggerable.OnPlantEnter();
+        if (col.TryGetComponent(out Triggerable triggerable))
+        {
+            triggerable.OnPlantEnter?.Invoke();
+            triggerable.isActive = true;
+        }
 
         Debug.Log("Trigger ENTER : " + col.name);
     }
 
     void _OnTriggerExit2D(Collider2D col)
     {
-        if (col.TryGetComponent(out Triggerable triggerable)) triggerable.OnPlantExit();
+        if (col.TryGetComponent(out Triggerable triggerable))
+        {
+            triggerable.OnPlantExit?.Invoke();
+            triggerable.isActive = false;
+        }
 
         Debug.Log("Trigger EXIT : " + col.name);
     }
