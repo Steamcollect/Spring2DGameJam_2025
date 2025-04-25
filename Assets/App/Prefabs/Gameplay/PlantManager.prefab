@@ -210,8 +210,8 @@ MonoBehaviour:
   startColor: {r: 0.18384475, g: 0.5698112, b: 0.23469743, a: 1}
   endColor: {r: 0.5169811, g: 0.37171787, b: 0, a: 1}
   outlineColor: {r: 0.029526496, g: 0.10943389, b: 0.047106124, a: 1}
-  plantThickness: 0.8
-  outlineThickness: 1
+  plantThickness: 0.3
+  outlineThickness: 0.4
   mainRenderer: {fileID: 4918118780813668604}
   outlineRenderer: {fileID: 7766883550550957367}
   startingPoint: {fileID: 1624612054764801148}

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class PlantManager : MonoBehaviour
@@ -53,7 +54,8 @@ public class PlantManager : MonoBehaviour
     [Space(10)]
     [SerializeField] Transform startingPoint;
 
-    HashSet<Collider2D> activeTriggers = new();
+    HashSet<Collider2D> triggers = new();
+    HashSet<Collider2D> exitTriggers = new();
 
     Camera cam;
 
@@ -105,7 +107,7 @@ public class PlantManager : MonoBehaviour
                 currentDist += movement.sqrMagnitude;
                 currentDist = currentDist > maxDistance ? maxDistance : currentDist;
 
-                CheckCollision();
+                CheckCollisionEnter();
 
                 if (pathPoints.Count > 0 && Vector2.Distance(pathPoints[^1].position, currentPoint) >= pointsSpacing)
                 {
@@ -137,6 +139,8 @@ public class PlantManager : MonoBehaviour
                     currentPoint = targetPoint.position;
                     currentDist = targetPoint.distance;
                 }
+
+                CheckCollisionExit();
             }
             else
             {
@@ -162,33 +166,39 @@ public class PlantManager : MonoBehaviour
         return b;
     }
 
-    void CheckCollision()
+    void CheckCollisionEnter()
     {
+        exitTriggers.Clear();
+
         Collider2D[] hits = Physics2D.OverlapPointAll(currentPoint);
-        HashSet<Collider2D> newTriggers = new();
 
         foreach (var hit in hits)
         {
             if (!hit.isTrigger) continue;
 
-            newTriggers.Add(hit);
-
-            if (!activeTriggers.Contains(hit))
+            if (!triggers.Contains(hit))
             {
                 _OnTriggerEnter2D(hit);
+                triggers.Add(hit);
             }
         }
-
-        foreach (var oldTrigger in activeTriggers)
-        {
-            if (!newTriggers.Contains(oldTrigger))
-            {
-                _OnTriggerExit2D(oldTrigger);
-            }
-        }
-
-        activeTriggers = newTriggers;
     }
+    void CheckCollisionExit()
+    {
+        Collider2D[] hits = Physics2D.OverlapPointAll(currentPoint);
+
+        foreach(var exitTrigger in exitTriggers)
+        {
+            if (!hits.Contains(exitTrigger))
+            {
+                _OnTriggerExit2D(exitTrigger);
+                triggers.Remove(exitTrigger);
+            }
+        }
+
+        exitTriggers = hits.ToHashSet();
+    }
+
 
     void _OnTriggerEnter2D(Collider2D col)
     {
