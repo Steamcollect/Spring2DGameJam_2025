@@ -48,6 +48,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   growSpeed: 10
   pointsSpacing: 0.5
+  maxDistance: 5
   lineRenderer: {fileID: 5234912570662952924}
   startingPoint: {fileID: 1624612054764801148}
 --- !u!120 &5234912570662952924
