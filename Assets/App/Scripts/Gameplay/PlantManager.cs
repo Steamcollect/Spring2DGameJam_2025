@@ -7,7 +7,9 @@ public class PlantManager : MonoBehaviour
     [SerializeField] float growSpeed;
     [SerializeField] float pointsSpacing;
 
-    public List<Vector3> pathPoints = new();
+    float currentDist = 0;
+
+    List<Vector3> pathPoints = new();
     Vector2 currentPoint;
 
     [Header("References")]
