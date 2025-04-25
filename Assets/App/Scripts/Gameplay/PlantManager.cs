@@ -36,6 +36,8 @@ public class PlantManager : MonoBehaviour
     [SerializeField] LineRenderer lineRenderer;
     [SerializeField] Transform startingPoint;
 
+    HashSet<Collider2D> activeTriggers = new();
+
     Camera cam;
 
     //[Header("RSO")]
@@ -58,20 +60,29 @@ public class PlantManager : MonoBehaviour
 
     private void Update()
     {
+        MouseLeftClick();
+        MouseRightClick();
+    }
+
+    void MouseLeftClick()
+    {
         if (Input.GetKey(KeyCode.Mouse0))
         {
             Vector2 mousePos = cam.ScreenToWorldPoint(Input.mousePosition);
+            Vector2 desirePos = GetPositionWithCollider(currentPoint, mousePos);
 
-            if(currentDist >= maxDistance) return;
+            if (currentDist >= maxDistance) return;
 
-            if (Vector2.Distance(currentPoint, mousePos) >= .01f)
+            if (Vector2.Distance(currentPoint, desirePos) >= .01f)
             {
-                Vector2 dir = mousePos - currentPoint;
+                Vector2 dir = desirePos - currentPoint;
                 Vector2 movement = dir.normalized * growSpeed * Time.deltaTime;
 
                 currentPoint += movement;
                 currentDist += movement.sqrMagnitude;
                 currentDist = currentDist > maxDistance ? maxDistance : currentDist;
+
+                CheckCollision();
 
                 if (pathPoints.Count > 0 && Vector2.Distance(pathPoints[^1].position, currentPoint) >= pointsSpacing)
                 {
@@ -81,6 +92,10 @@ public class PlantManager : MonoBehaviour
                 UpdatePlantVisual();
             }
         }
+
+    }
+    void MouseRightClick()
+    {
         if (Input.GetKey(KeyCode.Mouse1))
         {
             if (pathPoints.Count > 1)
@@ -109,6 +124,57 @@ public class PlantManager : MonoBehaviour
 
             UpdatePlantVisual();
         }
+
+    }
+
+    Vector2 GetPositionWithCollider(Vector2 a, Vector2 b)
+    {
+        RaycastHit2D hit = Physics2D.Linecast(a, b);
+
+        if (hit.collider != null && !hit.collider.isTrigger)
+        {
+            return hit.point + hit.normal * .05f;
+        }
+
+        return b;
+    }
+
+    void CheckCollision()
+    {
+        Collider2D[] hits = Physics2D.OverlapPointAll(currentPoint);
+        HashSet<Collider2D> newTriggers = new();
+
+        foreach (var hit in hits)
+        {
+            if (!hit.isTrigger) continue;
+
+            newTriggers.Add(hit);
+
+            if (!activeTriggers.Contains(hit))
+            {
+                _OnTriggerEnter2D(hit);
+            }
+        }
+
+        foreach (var oldTrigger in activeTriggers)
+        {
+            if (!newTriggers.Contains(oldTrigger))
+            {
+                _OnTriggerExit2D(oldTrigger);
+            }
+        }
+
+        activeTriggers = newTriggers;
+    }
+
+    void _OnTriggerEnter2D(Collider2D col)
+    {
+        Debug.Log("Trigger ENTER : " + col.name);
+    }
+
+    void _OnTriggerExit2D(Collider2D col)
+    {
+        Debug.Log("Trigger EXIT : " + col.name);
     }
 
     void UpdatePlantVisual()
