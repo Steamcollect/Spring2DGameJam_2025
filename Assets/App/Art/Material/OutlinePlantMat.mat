@@ -20,7 +20,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: PlantMat
+  m_Name: OutlinePlantMat
   m_Shader: {fileID: 4800000, guid: 650dd9526735d5b46b79224bc6e94025, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -76,8 +76,8 @@ Material:
     - _Surface: 0
     - _ZWrite: 1
     m_Colors:
-    - _BaseColor: {r: 0.15676036, g: 0.4641509, b: 0.19858642, a: 1}
-    - _Color: {r: 0.15676033, g: 0.4641509, b: 0.19858637, a: 1}
+    - _BaseColor: {r: 0.049348492, g: 0.10943389, b: 0.060427684, a: 1}
+    - _Color: {r: 0.049348466, g: 0.10943387, b: 0.060427666, a: 1}
     - _Flip: {r: 1, g: 1, b: 1, a: 1}
     - _RendererColor: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []

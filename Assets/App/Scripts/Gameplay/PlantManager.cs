@@ -38,7 +38,10 @@ public class PlantManager : MonoBehaviour
     [SerializeField] float zigzagSpeed = 2;
 
     [Header("References")]
-    [SerializeField] LineRenderer lineRenderer;
+    [SerializeField] LineRenderer mainRenderer;
+    [SerializeField] LineRenderer outlineRenderer;
+
+    [Space(10)]
     [SerializeField] Transform startingPoint;
 
     HashSet<Collider2D> activeTriggers = new();
@@ -57,8 +60,8 @@ public class PlantManager : MonoBehaviour
     private void Start()
     {
         pathPoints.Add(new PathPoint(startingPoint.position, 0));
-        lineRenderer.positionCount = 1;
-        lineRenderer.SetPosition(0, startingPoint.position);
+        mainRenderer.positionCount = 1;
+        mainRenderer.SetPosition(0, startingPoint.position);
 
         currentPoint = startingPoint.position;
     }
@@ -184,9 +187,16 @@ public class PlantManager : MonoBehaviour
 
     void UpdatePlantVisual()
     {
-        lineRenderer.positionCount = pathPoints.Count + 1;
-        lineRenderer.SetPositions(GetZigZagPathPositions());
-        lineRenderer.SetPosition(lineRenderer.positionCount - 1, currentPoint);
+        Vector3[] positions = GetZigZagPathPositions();
+
+        outlineRenderer.positionCount = positions.Length + 1;
+        mainRenderer.positionCount = positions.Length + 1;
+
+        outlineRenderer.SetPositions(positions);
+        mainRenderer.SetPositions(positions);
+
+        outlineRenderer.SetPosition(outlineRenderer.positionCount - 1, currentPoint);
+        mainRenderer.SetPosition(mainRenderer.positionCount - 1, currentPoint);
     }
 
     Vector3[] GetPathPointPositions()
