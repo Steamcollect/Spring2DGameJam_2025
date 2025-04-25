@@ -32,6 +32,11 @@ public class PlantManager : MonoBehaviour
         }
     }
 
+    [Space(10)]
+    [SerializeField] float zigzagAmplitude = .1f;
+    [SerializeField] float zigzagFrequency = 1;
+    [SerializeField] float zigzagSpeed = 2;
+
     [Header("References")]
     [SerializeField] LineRenderer lineRenderer;
     [SerializeField] Transform startingPoint;
@@ -180,7 +185,7 @@ public class PlantManager : MonoBehaviour
     void UpdatePlantVisual()
     {
         lineRenderer.positionCount = pathPoints.Count + 1;
-        lineRenderer.SetPositions(GetPathPointPositions());
+        lineRenderer.SetPositions(GetZigZagPathPositions());
         lineRenderer.SetPosition(lineRenderer.positionCount - 1, currentPoint);
     }
 
@@ -192,5 +197,33 @@ public class PlantManager : MonoBehaviour
             positions[i] = pathPoints[i].position;
         }
         return positions;
+    }
+
+    Vector3[] GetZigZagPathPositions()
+    {
+        Vector3[] basePositions = GetPathPointPositions();
+        Vector3[] zigzagPositions = new Vector3[basePositions.Length];
+
+        float time = Time.time * zigzagSpeed; // <- on anime avec le temps ici
+
+        for (int i = 0; i < basePositions.Length; i++)
+        {
+            Vector3 pos = basePositions[i];
+
+            if (i > 0)
+            {
+                Vector2 dir = (basePositions[i] - basePositions[i - 1]).normalized;
+                Vector2 normal = new Vector2(-dir.y, dir.x); // perpendiculaire
+
+                // Décalage dynamique animé avec le temps
+                float offset = Mathf.Sin(i * zigzagFrequency + time) * zigzagAmplitude;
+
+                pos += (Vector3)(normal * offset);
+            }
+
+            zigzagPositions[i] = pos;
+        }
+
+        return zigzagPositions;
     }
 }
