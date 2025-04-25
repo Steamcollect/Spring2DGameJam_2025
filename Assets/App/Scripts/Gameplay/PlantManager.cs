@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlantManager : MonoBehaviour
@@ -177,11 +176,15 @@ public class PlantManager : MonoBehaviour
 
     void _OnTriggerEnter2D(Collider2D col)
     {
+        if (col.TryGetComponent(out Triggerable triggerable)) triggerable.OnPlantEnter();
+
         Debug.Log("Trigger ENTER : " + col.name);
     }
 
     void _OnTriggerExit2D(Collider2D col)
     {
+        if (col.TryGetComponent(out Triggerable triggerable)) triggerable.OnPlantExit();
+
         Debug.Log("Trigger EXIT : " + col.name);
     }
 
