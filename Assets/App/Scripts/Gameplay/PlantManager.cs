@@ -16,15 +16,15 @@ public class PlantManager : MonoBehaviour
     float currentDist;
 
     List<PathPoint> pathPoints = new();
-    Vector2 currentPoint;
+    Vector3 currentPoint;
 
     [System.Serializable]
     struct PathPoint
     {
-        public Vector2 position;
+        public Vector3 position;
         public float distance;
 
-        public PathPoint(Vector2 position, float distance)
+        public PathPoint(Vector3 position, float distance)
         {
             this.position = position;
             this.distance = distance;
@@ -41,6 +41,10 @@ public class PlantManager : MonoBehaviour
     [SerializeField] Color endColor;
 
     [SerializeField] Color outlineColor;
+
+    [Space(10)]
+    [SerializeField] float plantThickness;
+    [SerializeField] float outlineThickness;
 
     [Header("References")]
     [SerializeField] LineRenderer mainRenderer;
@@ -66,7 +70,9 @@ public class PlantManager : MonoBehaviour
     {
         mainRenderer.material.color = startColor;
         outlineRenderer.material.color = outlineColor;
-        
+
+        mainRenderer.widthMultiplier = plantThickness;
+        outlineRenderer.widthMultiplier = outlineThickness;
 
         pathPoints.Add(new PathPoint(startingPoint.position, 0));
         mainRenderer.positionCount = 1;
@@ -90,12 +96,12 @@ public class PlantManager : MonoBehaviour
 
             if (currentDist >= maxDistance) return;
 
-            if (Vector2.Distance(currentPoint, desirePos) >= .01f)
+            if (Vector3.Distance(currentPoint, desirePos) >= .1f)
             {
-                Vector2 dir = desirePos - currentPoint;
+                Vector2 dir = desirePos - (Vector2)currentPoint;
                 Vector2 movement = dir.normalized * growSpeed * Time.deltaTime;
 
-                currentPoint += movement;
+                currentPoint += (Vector3)movement + -Vector3.forward * currentDist * .0001f;
                 currentDist += movement.sqrMagnitude;
                 currentDist = currentDist > maxDistance ? maxDistance : currentDist;
 
@@ -122,7 +128,7 @@ public class PlantManager : MonoBehaviour
                 Vector2 dir = currentPoint - targetPoint.position;
                 Vector2 movement = dir.normalized * ungrowSpeed * Time.deltaTime;
 
-                currentPoint -= movement;
+                currentPoint -= (Vector3)movement;
                 currentDist -= movement.sqrMagnitude;
 
                 if (Vector2.Distance(currentPoint, targetPoint.position) <= ungrowDetectionDist)
@@ -205,10 +211,15 @@ public class PlantManager : MonoBehaviour
         outlineRenderer.positionCount = positions.Length + 1;
         mainRenderer.positionCount = positions.Length + 1;
 
-        outlineRenderer.SetPositions(positions);
-        mainRenderer.SetPositions(positions);
+        Vector3 offset = Vector3.forward * 0.0001f; // Petit décalage en Z
 
-        outlineRenderer.SetPosition(outlineRenderer.positionCount - 1, currentPoint);
+        for (int i = 0; i < positions.Length; i++)
+        {
+            outlineRenderer.SetPosition(i, positions[i] + offset); // décalé
+            mainRenderer.SetPosition(i, positions[i]);             // normal
+        }
+
+        outlineRenderer.SetPosition(outlineRenderer.positionCount - 1, currentPoint + offset);
         mainRenderer.SetPosition(mainRenderer.positionCount - 1, currentPoint);
 
         mainRenderer.material.color = Color.Lerp(startColor, endColor, currentDist / maxDistance);
