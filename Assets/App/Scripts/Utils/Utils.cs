@@ -52,7 +52,13 @@ public static class Utils
 
         hook.StartCoroutine(DelayCoroutine());
     }
-    
+
     #endregion
-    
+
+    public static Vector2 GetPerpendicularBetweenPoints(Vector2 pointA, Vector2 pointB)
+    {
+        Vector2 direction = pointB - pointA;
+        Vector2 perpendicular = new Vector2(-direction.y, direction.x);
+        return perpendicular.normalized;
+    }
 }

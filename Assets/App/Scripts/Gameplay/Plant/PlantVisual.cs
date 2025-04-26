@@ -23,7 +23,9 @@ public class PlantVisual : MonoBehaviour
     [SerializeField] BranchVisual branchPrefab;
     Queue<Branch> branchQueue = new();
     [Space(10)]
-    [SerializeField] Vector2 branchSpacing;
+    [SerializeField] Vector2 branchSpacing; 
+    float _branchSpacing;
+    [SerializeField, Range(0,1)] float branchGrowthPercentage = .3f;
 
     List<Branch> branchs = new();
 
@@ -117,53 +119,41 @@ public class PlantVisual : MonoBehaviour
 
     void UpdateBranches(Vector3[] pathPositions, float maxDistance)
     {
-        float plantRatio = rsoPlantDist.Value / maxDistance;
-
-        // Désactiver et recycler les branches trop loin
-        for (int i = branchs.Count - 1; i >= 0; i--)
+        if(pathPositions.Length > 1)
         {
-            Branch b = branchs[i];
-            if (b.positionFromMaxDistance > plantRatio)
+            if(branchs.Count <= 0)
             {
-                b.leaf.gameObject.SetActive(false);
-                branchQueue.Enqueue(b);
-                branchs.RemoveAt(i);
+                SpawnBranch(0, pathPositions[0], Utils.GetPerpendicularBetweenPoints(pathPositions[0], pathPositions[1]));
+            }
+
+            if (Vector2.Distance(branchs[^1].leaf.transform.position, pathPositions[^1]) >= _branchSpacing)
+            {
+                SpawnBranch(rsoPlantDist.Value / maxDistance, pathPositions[^1], Utils.GetPerpendicularBetweenPoints(pathPositions[^1], pathPositions[^2]));
             }
         }
 
-        // Ajout de nouvelles branches au bon espacement
-        float nextSpacing = Random.Range(branchSpacing.x, branchSpacing.y);
-        float totalLength = 0f;
-
-        for (int i = 1; i < pathPositions.Length; i++)
+        List<Branch> newBranches = new();
+        foreach (var branch in branchs)
         {
-            float segmentLength = Vector3.Distance(pathPositions[i - 1], pathPositions[i]);
-            totalLength += segmentLength;
-
-            while (totalLength >= nextSpacing)
+            if(rsoPlantDist.Value / maxDistance < branch.positionFromMaxDistance)
             {
-                float t = (nextSpacing - (totalLength - segmentLength)) / segmentLength;
-                Vector3 pos = Vector3.Lerp(pathPositions[i - 1], pathPositions[i], t);
-
-                // Calcul direction locale
-                Vector3 dir = (pathPositions[i] - pathPositions[i - 1]).normalized;
-                Vector3 perp = new Vector3(-dir.y, dir.x, 0); // perpendiculaire droite
-
-                // Créer la branche
-                Branch branch = GetBranch(rsoPlantDist.Value / maxDistance);
-
-                branch.leaf.transform.position = pos;
-                branch.leaf.transform.rotation = Quaternion.LookRotation(Vector3.forward, perp); // bien orientée perpendiculaire
-
-                // Préparer le prochain espacement
-                nextSpacing += Random.Range(branchSpacing.x, branchSpacing.y);
+                branchQueue.Enqueue(branch);
+                branch.leaf.gameObject.SetActive(false);
+            }
+            else
+            {
+                branch.leaf.UpdateVisual(Mathf.Clamp(((rsoPlantDist.Value / maxDistance) - branch.positionFromMaxDistance) / branchGrowthPercentage, 0f, 1f));
+                newBranches.Add(branch);
             }
         }
+        branchs = newBranches;
     }
 
 
-    Branch GetBranch(float position)
+    Branch SpawnBranch(float positionOnPlant, Vector2 position, Vector2 normal)
     {
+        _branchSpacing = Random.Range(branchSpacing.x, branchSpacing.y);
+
         Branch branch;
         if (branchQueue.Count <= 0)
         {
@@ -171,9 +161,13 @@ public class PlantVisual : MonoBehaviour
         }
         else branch = branchQueue.Dequeue();
 
-        branch.positionFromMaxDistance = position;
+        branch.positionFromMaxDistance = positionOnPlant;
         branch.leaf.gameObject.SetActive(true);
         branchs.Add(branch);
+
+        branch.leaf.transform.position = position;
+        if (Random.value < .5f) normal = -normal;
+        branch.leaf.transform.up = normal;
 
         return branch;
     }

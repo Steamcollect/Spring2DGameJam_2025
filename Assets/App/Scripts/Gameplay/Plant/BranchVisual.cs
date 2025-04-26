@@ -52,7 +52,7 @@ public class BranchVisual : MonoBehaviour
         GenerateLeafs();
     }
 
-    void UpdateVisual(float currentGrowth)
+    public void UpdateVisual(float currentGrowth)
     {
         int totalPoints = pathPoints.Length;
         int visiblePoints = Mathf.Max(1, Mathf.RoundToInt(totalPoints * currentGrowth));

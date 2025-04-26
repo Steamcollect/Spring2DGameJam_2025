@@ -427,6 +427,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 6000515782034891781, guid: 979daca1b263b914d9221dd5ff1f890e, type: 3}
     - target: {fileID: 5907802670096160726, guid: 760f5365f90081040aadb73b7765bade, type: 3}
+      propertyPath: branchSpacing
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5907802670096160726, guid: 760f5365f90081040aadb73b7765bade, type: 3}
       propertyPath: branchSpacing.x
       value: 0.3
       objectReference: {fileID: 0}
