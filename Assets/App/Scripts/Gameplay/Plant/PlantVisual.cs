@@ -119,14 +119,13 @@ public class PlantVisual : MonoBehaviour
 
     void UpdateBranches(Vector3[] pathPositions, float maxDistance)
     {
-        if(pathPositions.Length > 1)
+        if(pathPositions.Length > 2)
         {
             if(branchs.Count <= 0)
             {
-                SpawnBranch(0, pathPositions[0], Utils.GetPerpendicularBetweenPoints(pathPositions[0], pathPositions[1]));
+                SpawnBranch(0, pathPositions[0], Utils.GetPerpendicularBetweenPoints(pathPositions[1], pathPositions[2]));
             }
-
-            if (Vector2.Distance(branchs[^1].leaf.transform.position, pathPositions[^1]) >= _branchSpacing)
+            else if (Vector2.Distance(branchs[^1].leaf.transform.position, pathPositions[^1]) >= _branchSpacing)
             {
                 SpawnBranch(rsoPlantDist.Value / maxDistance, pathPositions[^1], Utils.GetPerpendicularBetweenPoints(pathPositions[^1], pathPositions[^2]));
             }
