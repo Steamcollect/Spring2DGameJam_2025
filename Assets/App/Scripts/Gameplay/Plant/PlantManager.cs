@@ -206,22 +206,18 @@ public class PlantManager : MonoBehaviour
     {
         if (col.TryGetComponent(out Triggerable triggerable))
         {
-            triggerable.OnPlantEnter?.Invoke();
             triggerable.isActive = true;
+            triggerable.OnPlantEnter?.Invoke();
         }
-
-        Debug.Log("Trigger ENTER : " + col.name);
     }
 
     void _OnTriggerExit2D(Collider2D col)
     {
         if (col.isTrigger && col.TryGetComponent(out Triggerable triggerable))
         {
-            triggerable.OnPlantExit?.Invoke();
             triggerable.isActive = false;
+            triggerable.OnPlantExit?.Invoke();
         }
-
-        Debug.Log("Trigger EXIT : " + col.name);
     }
 
     Vector3[] GetPathPointPositions()
