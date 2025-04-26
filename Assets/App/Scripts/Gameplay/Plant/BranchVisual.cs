@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class BranchVisual : MonoBehaviour
@@ -16,13 +17,6 @@ public class BranchVisual : MonoBehaviour
     [SerializeField] Vector2 whidth;
 
     Vector3[] pathPoints;
-
-    [Header("Branche")]
-    [SerializeField] Vector2 leafCount;
-    [SerializeField] Vector2 leafRot;
-    [SerializeField] float maxLeafSize;
-    Leaf[] leafsPoints;
-
 
     [System.Serializable]
     public struct Leaf
@@ -41,16 +35,10 @@ public class BranchVisual : MonoBehaviour
     [Header("References")]
     [SerializeField] LineRenderer branchRenderer;
 
-    void Start()
-    {
-        Material mat = Instantiate(branchRenderer.material);
-        branchRenderer.material = mat;
-    }
-
-    public void Setup(float heightFactor)
+    public void Setup(float heightFactor, Material mat)
     {
         GenerateWavyPath(heightFactor);
-        GenerateLeafs();
+        branchRenderer.material = mat;
     }
 
     public void UpdateVisual(float currentGrowth)
@@ -65,66 +53,7 @@ public class BranchVisual : MonoBehaviour
         {
             branchRenderer.SetPosition(i, pathPoints[i]);
         }
-
-        // --- Mise à jour des feuilles ---
-        if (leafsPoints != null)
-        {
-            foreach (var leaf in leafsPoints)
-            {
-                foreach (var leafGO in leaf.leaves)
-                {
-                    if (leafGO == null) continue;
-
-                    // Le facteur de croissance de la feuille dépend de sa position sur la branche
-                    float leafGrowth = Mathf.InverseLerp(leaf.positionOnGrowth - 0.1f, leaf.positionOnGrowth + 0.1f, currentGrowth);
-                    leafGrowth = Mathf.Clamp01(leafGrowth);
-
-                    // Échelle de la feuille, limitée par maxLeafSize
-                    leafGO.transform.localScale = Vector3.one * (leafGrowth * maxLeafSize);
-
-                    // Active ou désactive selon la progression
-                    leafGO.SetActive(leafGrowth > 0f);
-                }
-            }
-        }
     }
-
-    void GenerateLeafs()
-    {
-        int leafNumber = Random.Range((int)leafCount.x, (int)leafCount.y + 1);
-        leafsPoints = new Leaf[leafNumber];
-
-        for (int i = 0; i < leafNumber; i++)
-        {
-            Leaf leaf = new Leaf();
-
-            // Génère une position sur la croissance (0 = base, 1 = sommet)
-            leaf.positionOnGrowth = Random.Range(0f, 1f);
-
-            // Trouver l'index sur le path
-            int pathIndex = Mathf.Clamp(Mathf.RoundToInt(leaf.positionOnGrowth * (pathPoints.Length - 1)), 0, pathPoints.Length - 1);
-
-            // Prend la position correspondante
-            Vector3 basePos = pathPoints[pathIndex];
-            leaf.position = basePos;
-
-            // Génère un angle aléatoire dans les bornes
-            leaf.angle = Random.Range(leafRot.x, leafRot.y);
-
-            // Instancie la feuille
-            GameObject leafGO = Instantiate(leafPrefab, transform);
-            leafGO.transform.localPosition = basePos;
-            leafGO.transform.localRotation = Quaternion.Euler(0, 0, leaf.angle);
-            leafGO.SetActive(true);
-
-            // Stocke la feuille dans un tableau pour pouvoir la retrouver après
-            leaf.leaves = new GameObject[] { leafGO };
-
-            // Enregistre
-            leafsPoints[i] = leaf;
-        }
-    }
-
 
     bool invertWaveDirection = false;
     void GenerateWavyPath(float heightFactor)
