@@ -222,7 +222,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7505500155723161176, guid: e8f7cfef608112f44a6c6b0c8537ff49, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -10
+      value: -30
       objectReference: {fileID: 0}
     - target: {fileID: 7505500155723161176, guid: e8f7cfef608112f44a6c6b0c8537ff49, type: 3}
       propertyPath: m_LocalRotation.w
@@ -324,7 +324,7 @@ PrefabInstance:
     - target: {fileID: 5907802670096160726, guid: 760f5365f90081040aadb73b7765bade, type: 3}
       propertyPath: leafPrefab
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 874144877227450610, guid: 0398f94fc30f0aa4cabc0cb32563e4fa, type: 3}
     - target: {fileID: 5907802670096160726, guid: 760f5365f90081040aadb73b7765bade, type: 3}
       propertyPath: branchPrefab
       value: 
@@ -346,11 +346,71 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 0}
     - target: {fileID: 5907802670096160726, guid: 760f5365f90081040aadb73b7765bade, type: 3}
+      propertyPath: leafGradient.key0.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5907802670096160726, guid: 760f5365f90081040aadb73b7765bade, type: 3}
+      propertyPath: leafGradient.key0.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5907802670096160726, guid: 760f5365f90081040aadb73b7765bade, type: 3}
+      propertyPath: leafGradient.key0.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5907802670096160726, guid: 760f5365f90081040aadb73b7765bade, type: 3}
+      propertyPath: leafGradient.key1.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5907802670096160726, guid: 760f5365f90081040aadb73b7765bade, type: 3}
+      propertyPath: leafGradient.key1.g
+      value: 0.23219156
+      objectReference: {fileID: 0}
+    - target: {fileID: 5907802670096160726, guid: 760f5365f90081040aadb73b7765bade, type: 3}
+      propertyPath: leafGradient.key1.r
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5907802670096160726, guid: 760f5365f90081040aadb73b7765bade, type: 3}
       propertyPath: branchGrowthPercentage
       value: 0.4
       objectReference: {fileID: 0}
     - target: {fileID: 5907802670096160726, guid: 760f5365f90081040aadb73b7765bade, type: 3}
+      propertyPath: distRequireToSpawnLeaf
+      value: 0.05
+      objectReference: {fileID: 0}
+    - target: {fileID: 5907802670096160726, guid: 760f5365f90081040aadb73b7765bade, type: 3}
+      propertyPath: outlineGradient.key0.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5907802670096160726, guid: 760f5365f90081040aadb73b7765bade, type: 3}
+      propertyPath: outlineGradient.key0.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5907802670096160726, guid: 760f5365f90081040aadb73b7765bade, type: 3}
+      propertyPath: outlineGradient.key0.r
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5907802670096160726, guid: 760f5365f90081040aadb73b7765bade, type: 3}
+      propertyPath: outlineGradient.key1.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5907802670096160726, guid: 760f5365f90081040aadb73b7765bade, type: 3}
+      propertyPath: outlineGradient.key1.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5907802670096160726, guid: 760f5365f90081040aadb73b7765bade, type: 3}
+      propertyPath: outlineGradient.key1.r
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5907802670096160726, guid: 760f5365f90081040aadb73b7765bade, type: 3}
       propertyPath: leafGrowthCurve.m_Curve.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5907802670096160726, guid: 760f5365f90081040aadb73b7765bade, type: 3}
+      propertyPath: leafSizePerDistance.m_Curve.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5907802670096160726, guid: 760f5365f90081040aadb73b7765bade, type: 3}
+      propertyPath: leafDistPerPlantDist.m_Curve.Array.size
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5907802670096160726, guid: 760f5365f90081040aadb73b7765bade, type: 3}
@@ -372,6 +432,82 @@ PrefabInstance:
     - target: {fileID: 5907802670096160726, guid: 760f5365f90081040aadb73b7765bade, type: 3}
       propertyPath: leafGrowthCurve.m_Curve.Array.data[1].outSlope
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5907802670096160726, guid: 760f5365f90081040aadb73b7765bade, type: 3}
+      propertyPath: leafSizePerDistance.m_Curve.Array.data[1].time
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 5907802670096160726, guid: 760f5365f90081040aadb73b7765bade, type: 3}
+      propertyPath: leafDistPerPlantDist.m_Curve.Array.data[0].time
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5907802670096160726, guid: 760f5365f90081040aadb73b7765bade, type: 3}
+      propertyPath: leafDistPerPlantDist.m_Curve.Array.data[1].time
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 5907802670096160726, guid: 760f5365f90081040aadb73b7765bade, type: 3}
+      propertyPath: leafSizePerDistance.m_Curve.Array.data[1].value
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5907802670096160726, guid: 760f5365f90081040aadb73b7765bade, type: 3}
+      propertyPath: leafDistPerPlantDist.m_Curve.Array.data[1].value
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5907802670096160726, guid: 760f5365f90081040aadb73b7765bade, type: 3}
+      propertyPath: leafSizePerDistance.m_Curve.Array.data[0].inSlope
+      value: 0.05581818
+      objectReference: {fileID: 0}
+    - target: {fileID: 5907802670096160726, guid: 760f5365f90081040aadb73b7765bade, type: 3}
+      propertyPath: leafSizePerDistance.m_Curve.Array.data[1].inSlope
+      value: 0.001379254
+      objectReference: {fileID: 0}
+    - target: {fileID: 5907802670096160726, guid: 760f5365f90081040aadb73b7765bade, type: 3}
+      propertyPath: leafDistPerPlantDist.m_Curve.Array.data[0].inSlope
+      value: 0.02
+      objectReference: {fileID: 0}
+    - target: {fileID: 5907802670096160726, guid: 760f5365f90081040aadb73b7765bade, type: 3}
+      propertyPath: leafDistPerPlantDist.m_Curve.Array.data[1].inSlope
+      value: 0.02
+      objectReference: {fileID: 0}
+    - target: {fileID: 5907802670096160726, guid: 760f5365f90081040aadb73b7765bade, type: 3}
+      propertyPath: leafSizePerDistance.m_Curve.Array.data[0].outSlope
+      value: 0.05581818
+      objectReference: {fileID: 0}
+    - target: {fileID: 5907802670096160726, guid: 760f5365f90081040aadb73b7765bade, type: 3}
+      propertyPath: leafSizePerDistance.m_Curve.Array.data[1].inWeight
+      value: 0.2245614
+      objectReference: {fileID: 0}
+    - target: {fileID: 5907802670096160726, guid: 760f5365f90081040aadb73b7765bade, type: 3}
+      propertyPath: leafSizePerDistance.m_Curve.Array.data[1].outSlope
+      value: 0.001379254
+      objectReference: {fileID: 0}
+    - target: {fileID: 5907802670096160726, guid: 760f5365f90081040aadb73b7765bade, type: 3}
+      propertyPath: leafDistPerPlantDist.m_Curve.Array.data[0].outSlope
+      value: 0.02
+      objectReference: {fileID: 0}
+    - target: {fileID: 5907802670096160726, guid: 760f5365f90081040aadb73b7765bade, type: 3}
+      propertyPath: leafDistPerPlantDist.m_Curve.Array.data[1].inWeight
+      value: 0.33333334
+      objectReference: {fileID: 0}
+    - target: {fileID: 5907802670096160726, guid: 760f5365f90081040aadb73b7765bade, type: 3}
+      propertyPath: leafDistPerPlantDist.m_Curve.Array.data[1].outSlope
+      value: 0.02
+      objectReference: {fileID: 0}
+    - target: {fileID: 5907802670096160726, guid: 760f5365f90081040aadb73b7765bade, type: 3}
+      propertyPath: leafSizePerDistance.m_Curve.Array.data[0].outWeight
+      value: 0.054970756
+      objectReference: {fileID: 0}
+    - target: {fileID: 5907802670096160726, guid: 760f5365f90081040aadb73b7765bade, type: 3}
+      propertyPath: leafDistPerPlantDist.m_Curve.Array.data[0].outWeight
+      value: 0.33333334
+      objectReference: {fileID: 0}
+    - target: {fileID: 5907802670096160726, guid: 760f5365f90081040aadb73b7765bade, type: 3}
+      propertyPath: leafDistPerPlantDist.m_Curve.Array.data[0].tangentMode
+      value: 34
+      objectReference: {fileID: 0}
+    - target: {fileID: 5907802670096160726, guid: 760f5365f90081040aadb73b7765bade, type: 3}
+      propertyPath: leafDistPerPlantDist.m_Curve.Array.data[1].tangentMode
+      value: 34
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
