@@ -8,16 +8,12 @@ public class PlantManager : MonoBehaviour
     [SerializeField] float growSpeed;
     [SerializeField] float ungrowSpeed;
 
-    [Space(5)]
-    [SerializeField] float pushBackForce;
-    
     [Space(10)]
     [SerializeField] float pointsSpacing;
     [SerializeField] float ungrowDetectionDist;
 
     [Space(10)]
     [SerializeField] float maxDistance;
-    float currentDist;
 
     List<PathPoint> pathPoints = new();
     Vector3 currentPoint;
@@ -62,8 +58,12 @@ public class PlantManager : MonoBehaviour
 
     Camera cam;
 
-    //[Header("RSO")]
-    //[Header("RSE")]
+    [Header("RSO")]
+    [SerializeField] RSO_PlantDistance rsoPlantDist;
+
+    [Header("RSE")]
+    [SerializeField] RSE_OnPlantUngrow rseOnPlantUngrow;
+
     //[Header("RSF")]
 
     private void Awake()
@@ -97,37 +97,40 @@ public class PlantManager : MonoBehaviour
         if (Input.GetKey(KeyCode.Mouse0))
         {
             Vector2 mousePos = cam.ScreenToWorldPoint(Input.mousePosition);
-            Vector2 desirePos = GetPositionWithCollider(out Rigidbody2D rbTouch, currentPoint, mousePos);
+            Vector2 desirePos = GetPositionWithCollider(out Movable movableTouch, currentPoint, mousePos);
 
-            if (currentDist >= maxDistance) return;
+            if (rsoPlantDist.Value >= maxDistance) return;
 
             if (Vector3.Distance(currentPoint, desirePos) >= .1f)
             {
                 Vector2 dir = desirePos - (Vector2)currentPoint;
                 Vector2 movement = dir.normalized * growSpeed * Time.deltaTime;
 
-                currentPoint += (Vector3)movement + -Vector3.forward * currentDist * .0001f;
-                currentDist += movement.sqrMagnitude;
-                currentDist = currentDist > maxDistance ? maxDistance : currentDist;
+                currentPoint += (Vector3)movement + -Vector3.forward * rsoPlantDist.Value * .0001f;
+                rsoPlantDist.Value += movement.sqrMagnitude;
+                rsoPlantDist.Value = rsoPlantDist.Value > maxDistance ? maxDistance : rsoPlantDist.Value;
 
                 CheckCollisionEnter();
 
                 if (pathPoints.Count > 0 && Vector2.Distance(pathPoints[^1].position, currentPoint) >= pointsSpacing)
                 {
-                    pathPoints.Add(new PathPoint(currentPoint, currentDist));
+                    pathPoints.Add(new PathPoint(currentPoint, rsoPlantDist.Value));
                 }
 
                 UpdatePlantVisual();
+
+                isUngrowEnd = false;
             }
-            else if(rbTouch != null)
+            else if(movableTouch != null)
             {
                 Vector2 dir = desirePos - (Vector2)currentPoint;
-
-                rbTouch.AddForce(dir.normalized * pushBackForce);
+                movableTouch.Move(dir);
             }
         }
 
     }
+
+    bool isUngrowEnd = false;
     void MouseRightClick()
     {
         if (Input.GetKey(KeyCode.Mouse1))
@@ -140,37 +143,43 @@ public class PlantManager : MonoBehaviour
                 Vector2 movement = dir.normalized * ungrowSpeed * Time.deltaTime;
 
                 currentPoint -= (Vector3)movement;
-                currentDist -= movement.sqrMagnitude;
+                rsoPlantDist.Value -= movement.sqrMagnitude;
 
                 if (Vector2.Distance(currentPoint, targetPoint.position) <= ungrowDetectionDist)
                 {
                     pathPoints.RemoveAt(pathPoints.Count - 1);
                     currentPoint = targetPoint.position;
-                    currentDist = targetPoint.distance;
+                    rsoPlantDist.Value = targetPoint.distance;
                 }
 
                 CheckCollisionExit();
+
+                rseOnPlantUngrow.Call();
             }
             else
             {
-                currentDist = 0;
+                rsoPlantDist.Value = 0;
                 currentPoint = startingPoint.position;
 
+                if (!isUngrowEnd)
+                {
+                    isUngrowEnd = true;
+                    rseOnPlantUngrow.Call();
+                }
             }
-
             UpdatePlantVisual();
         }
 
     }
 
-    Vector2 GetPositionWithCollider(out Rigidbody2D rbTouch, Vector2 a, Vector2 b)
+    Vector2 GetPositionWithCollider(out Movable movableTouch, Vector2 a, Vector2 b)
     {
         RaycastHit2D hit = Physics2D.Linecast(a, b);
-        rbTouch = null;
+        movableTouch = null;
 
         if (hit.collider != null && !hit.collider.isTrigger)
         {
-            if (hit.collider.TryGetComponent(out Rigidbody2D rb)) rbTouch = rb;
+            if (hit.collider.TryGetComponent(out Movable movable)) movableTouch = movable;
 
             return hit.point + hit.normal * .05f;
         }
@@ -252,7 +261,7 @@ public class PlantManager : MonoBehaviour
         outlineRenderer.SetPosition(outlineRenderer.positionCount - 1, currentPoint + offset);
         mainRenderer.SetPosition(mainRenderer.positionCount - 1, currentPoint);
 
-        mainRenderer.material.color = Color.Lerp(startColor, endColor, currentDist / maxDistance);
+        mainRenderer.material.color = Color.Lerp(startColor, endColor, rsoPlantDist.Value / maxDistance);
     }
 
     Vector3[] GetPathPointPositions()
