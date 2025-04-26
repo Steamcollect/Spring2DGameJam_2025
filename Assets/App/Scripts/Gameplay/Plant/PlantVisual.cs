@@ -164,6 +164,8 @@ public class PlantVisual : MonoBehaviour
         branch.leaf.gameObject.SetActive(true);
         branchs.Add(branch);
 
+        branch.leaf.Setup(positionOnPlant);
+
         branch.leaf.transform.position = position;
         if (Random.value < .5f) normal = -normal;
         branch.leaf.transform.up = normal;
@@ -174,7 +176,6 @@ public class PlantVisual : MonoBehaviour
     {
         BranchVisual branch = Instantiate(branchPrefab, transform);
         branch.gameObject.SetActive(false);
-        branch.Setup();
 
         return new Branch(branch, 0);
     }

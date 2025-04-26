@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class BranchVisual : MonoBehaviour
 {
-    [SerializeField, Range(0, 1), ContextMenuItem("Generate new path", "GenerateNewPath")] float growth;
+    [SerializeField, Range(0, 1)] float growth;
 
     [Header("Branche")]
     [SerializeField] Vector2 length;
@@ -47,9 +47,9 @@ public class BranchVisual : MonoBehaviour
         branchRenderer.material = mat;
     }
 
-    public void Setup()
+    public void Setup(float heightFactor)
     {
-        GenerateWavyPath();
+        GenerateWavyPath(heightFactor);
         GenerateLeafs();
     }
 
@@ -89,8 +89,6 @@ public class BranchVisual : MonoBehaviour
         }
     }
 
-
-
     void GenerateLeafs()
     {
         int leafNumber = Random.Range((int)leafCount.x, (int)leafCount.y + 1);
@@ -129,9 +127,9 @@ public class BranchVisual : MonoBehaviour
 
 
     bool invertWaveDirection = false;
-    void GenerateWavyPath()
+    void GenerateWavyPath(float heightFactor)
     {
-        float totalLength = Random.Range(length.x, length.y);
+        float totalLength = Mathf.Lerp(length.y, length.x, heightFactor); // Plus on est haut, plus c'est petit
         int pointsCount = Random.Range(this.pointsCount.x, this.pointsCount.y);
         float amplitude = Random.Range(this.amplitude.x, this.amplitude.y);
         float frequency = Random.Range(this.frequency.x, this.frequency.y);
@@ -152,20 +150,5 @@ public class BranchVisual : MonoBehaviour
         }
 
         pathPoints = path;
-    }
-
-
-    void GenerateNewPath()
-    {
-        GenerateWavyPath();
-        GenerateLeafs();
-    }
-
-    private void OnValidate()
-    {
-        //if(pathPoints.Length > 0 && leafsPoints.Length > 0)
-        //{
-        //    UpdateVisual(growth);
-        //}
     }
 }

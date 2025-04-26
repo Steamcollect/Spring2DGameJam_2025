@@ -50,8 +50,12 @@ public class PlantManager : MonoBehaviour
 
     //[Header("RSF")]
 
+    public static PlantManager instance;
+
     private void Awake()
     {
+        instance = this;
+
         cam = Camera.main;
     }
 
@@ -239,5 +243,10 @@ public class PlantManager : MonoBehaviour
         }
 
         return totalDistance;
+    }
+
+    public void ModifyMaxDistance(float distanceGiven)
+    {
+        maxDistance += distanceGiven;
     }
 }
