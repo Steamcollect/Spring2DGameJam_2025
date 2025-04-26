@@ -58,6 +58,7 @@ public class PlantManager : MonoBehaviour
     private void Start()
     {
         pathPoints.Add(new PathPoint(startingPoint.position, 0));
+        rsoPlantDist.Value = 0;
 
         currentPoint = startingPoint.position;
     }
@@ -82,8 +83,8 @@ public class PlantManager : MonoBehaviour
                 Vector2 dir = desirePos - (Vector2)currentPoint;
                 Vector2 movement = dir.normalized * growSpeed * Time.deltaTime;
 
-                currentPoint += (Vector3)movement + -Vector3.forward * rsoPlantDist.Value * .0001f;
-                rsoPlantDist.Value += movement.sqrMagnitude;
+                currentPoint += (Vector3)movement + -Vector3.forward * rsoPlantDist.Value * .0005f;
+                rsoPlantDist.Value = GetTotalPathDistance();
                 rsoPlantDist.Value = rsoPlantDist.Value > maxDistance ? maxDistance : rsoPlantDist.Value;
 
                 CheckCollisionEnter();
@@ -119,7 +120,7 @@ public class PlantManager : MonoBehaviour
                 Vector2 movement = dir.normalized * ungrowSpeed * Time.deltaTime;
 
                 currentPoint -= (Vector3)movement;
-                rsoPlantDist.Value -= movement.sqrMagnitude;
+                rsoPlantDist.Value = GetTotalPathDistance();
 
                 if (Vector2.Distance(currentPoint, targetPoint.position) <= ungrowDetectionDist)
                 {
@@ -227,5 +228,16 @@ public class PlantManager : MonoBehaviour
             positions[i] = pathPoints[i].position;
         }
         return positions;
+    }
+    float GetTotalPathDistance()
+    {
+        float totalDistance = 0f;
+
+        for (int i = 1; i < pathPoints.Count; i++)
+        {
+            totalDistance += Vector3.Distance(pathPoints[i - 1].position, pathPoints[i].position);
+        }
+
+        return totalDistance;
     }
 }
