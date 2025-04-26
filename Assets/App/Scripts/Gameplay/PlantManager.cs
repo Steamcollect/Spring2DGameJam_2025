@@ -9,6 +9,9 @@ public class PlantManager : MonoBehaviour
     [SerializeField] float ungrowSpeed;
 
     [Space(5)]
+    [SerializeField] float pushBackForce;
+    
+    [Space(10)]
     [SerializeField] float pointsSpacing;
     [SerializeField] float ungrowDetectionDist;
 
@@ -94,7 +97,7 @@ public class PlantManager : MonoBehaviour
         if (Input.GetKey(KeyCode.Mouse0))
         {
             Vector2 mousePos = cam.ScreenToWorldPoint(Input.mousePosition);
-            Vector2 desirePos = GetPositionWithCollider(currentPoint, mousePos);
+            Vector2 desirePos = GetPositionWithCollider(out Rigidbody2D rbTouch, currentPoint, mousePos);
 
             if (currentDist >= maxDistance) return;
 
@@ -115,6 +118,12 @@ public class PlantManager : MonoBehaviour
                 }
 
                 UpdatePlantVisual();
+            }
+            else if(rbTouch != null)
+            {
+                Vector2 dir = desirePos - (Vector2)currentPoint;
+
+                rbTouch.AddForce(dir.normalized * pushBackForce);
             }
         }
 
@@ -154,12 +163,15 @@ public class PlantManager : MonoBehaviour
 
     }
 
-    Vector2 GetPositionWithCollider(Vector2 a, Vector2 b)
+    Vector2 GetPositionWithCollider(out Rigidbody2D rbTouch, Vector2 a, Vector2 b)
     {
         RaycastHit2D hit = Physics2D.Linecast(a, b);
+        rbTouch = null;
 
         if (hit.collider != null && !hit.collider.isTrigger)
         {
+            if (hit.collider.TryGetComponent(out Rigidbody2D rb)) rbTouch = rb;
+
             return hit.point + hit.normal * .05f;
         }
 
@@ -213,7 +225,7 @@ public class PlantManager : MonoBehaviour
 
     void _OnTriggerExit2D(Collider2D col)
     {
-        if (col.TryGetComponent(out Triggerable triggerable))
+        if (col.isTrigger && col.TryGetComponent(out Triggerable triggerable))
         {
             triggerable.OnPlantExit?.Invoke();
             triggerable.isActive = false;
