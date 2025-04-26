@@ -8,6 +8,8 @@ public class PlantManager : MonoBehaviour
     [SerializeField] float growSpeed;
     [SerializeField] float ungrowSpeed;
 
+    [SerializeField] Vector3 posOffset;
+
     [Space(10)]
     [SerializeField] float pointsSpacing;
     [SerializeField] float ungrowDetectionDist;
@@ -61,10 +63,10 @@ public class PlantManager : MonoBehaviour
 
     private void Start()
     {
-        pathPoints.Add(new PathPoint(startingPoint.position, 0));
+        pathPoints.Add(new PathPoint(startingPoint.position + posOffset, 0));
         rsoPlantDist.Value = 0;
 
-        currentPoint = startingPoint.position;
+        currentPoint = startingPoint.position + posOffset;
     }
 
     private void Update()
@@ -140,7 +142,7 @@ public class PlantManager : MonoBehaviour
             else
             {
                 rsoPlantDist.Value = 0;
-                currentPoint = startingPoint.position;
+                currentPoint = startingPoint.position + posOffset;
 
                 if (!isUngrowEnd)
                 {
