@@ -9170,6 +9170,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Grid
       objectReference: {fileID: 0}
+    - target: {fileID: 8293861340784423859, guid: 16ba8b7e2580c9d4e8c7867074d1d3cc, type: 3}
+      propertyPath: m_CellSize.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8293861340784423859, guid: 16ba8b7e2580c9d4e8c7867074d1d3cc, type: 3}
+      propertyPath: m_CellSize.y
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -9343,17 +9351,37 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8429467372122635035, guid: e8f7cfef608112f44a6c6b0c8537ff49, type: 3}
+      propertyPath: m_AssetsPPU
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 8429467372122635035, guid: e8f7cfef608112f44a6c6b0c8537ff49, type: 3}
+      propertyPath: m_RefResolutionX
+      value: 640
+      objectReference: {fileID: 0}
+    - target: {fileID: 8429467372122635035, guid: e8f7cfef608112f44a6c6b0c8537ff49, type: 3}
+      propertyPath: m_RefResolutionY
+      value: 360
+      objectReference: {fileID: 0}
     - target: {fileID: 8684703558057296538, guid: e8f7cfef608112f44a6c6b0c8537ff49, type: 3}
       propertyPath: m_Name
       value: Main Camera (1)
       objectReference: {fileID: 0}
     - target: {fileID: 8779410459646259646, guid: e8f7cfef608112f44a6c6b0c8537ff49, type: 3}
       propertyPath: orthographic size
-      value: 5.625
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 8779410459646259646, guid: e8f7cfef608112f44a6c6b0c8537ff49, type: 3}
       propertyPath: m_CullingMask.m_Bits
       value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 8779410459646259646, guid: e8f7cfef608112f44a6c6b0c8537ff49, type: 3}
+      propertyPath: m_NormalizedViewPortRect.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8779410459646259646, guid: e8f7cfef608112f44a6c6b0c8537ff49, type: 3}
+      propertyPath: m_NormalizedViewPortRect.height
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
