@@ -9162,6 +9162,10 @@ PrefabInstance:
       propertyPath: m_Tiles.Array.data[1016].second.m_TileObjectToInstantiateIndex
       value: 65535
       objectReference: {fileID: 0}
+    - target: {fileID: 1926178176573497664, guid: 16ba8b7e2580c9d4e8c7867074d1d3cc, type: 3}
+      propertyPath: m_UsedByComposite
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7167245843418514582, guid: 16ba8b7e2580c9d4e8c7867074d1d3cc, type: 3}
       propertyPath: m_Name
       value: Grid
