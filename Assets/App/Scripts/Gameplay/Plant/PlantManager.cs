@@ -82,7 +82,7 @@ public class PlantManager : MonoBehaviour
 
             if (rsoPlantDist.Value >= maxDistance) return;
 
-            if (Vector3.Distance(currentPoint, desirePos) >= .1f)
+            if (Vector2.Distance(currentPoint, desirePos) >= .1f)
             {
                 Vector2 dir = desirePos - (Vector2)currentPoint;
                 Vector2 movement = dir.normalized * growSpeed * Time.deltaTime;
