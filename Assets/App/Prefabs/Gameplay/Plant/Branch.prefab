@@ -45,15 +45,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b7aebdffad78c5e4c9185b6514fd56d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  growth: 0
+  growth: 0.056
   length: {x: 1.5, y: 2.5}
   pointsCount: {x: 15, y: 20}
   amplitude: {x: 0.1, y: 0.1}
   frequency: {x: 0.8, y: 1.2}
   whidth: {x: 0.1, y: 0.3}
-  leafCount: {x: 8, y: 15}
-  leafRot: {x: -30, y: 30}
-  maxLeafSize: 0.1
   leafPrefab: {fileID: 4372474412896740729, guid: 0398f94fc30f0aa4cabc0cb32563e4fa, type: 3}
   branchRenderer: {fileID: 1218886377519775022}
 --- !u!120 &1218886377519775022
