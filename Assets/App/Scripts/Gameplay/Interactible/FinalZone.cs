@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class EndZone : Triggerable
+public class FinalZone : Triggerable
 {
     [SerializeField, SceneName] string levelToLoad;
 

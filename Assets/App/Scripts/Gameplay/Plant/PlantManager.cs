@@ -31,25 +31,6 @@ public class PlantManager : MonoBehaviour
         }
     }
 
-    [Header("Visual")]
-    [SerializeField] float zigzagAmplitude = .1f;
-    [SerializeField] float zigzagFrequency = 1;
-    [SerializeField] float zigzagSpeed = 2;
-
-    [Space(10)]
-    [SerializeField] Color startColor;
-    [SerializeField] Color endColor;
-
-    [SerializeField] Color outlineColor;
-
-    [Space(10)]
-    [SerializeField] float plantThickness;
-    [SerializeField] float outlineThickness;
-
-    [Header("References")]
-    [SerializeField] LineRenderer mainRenderer;
-    [SerializeField] LineRenderer outlineRenderer;
-
     [Space(10)]
     [SerializeField] Transform startingPoint;
 
@@ -57,6 +38,9 @@ public class PlantManager : MonoBehaviour
     HashSet<Collider2D> exitTriggers = new();
 
     Camera cam;
+
+    [Header("References")]
+    [SerializeField] PlantVisual plantVisual;
 
     [Header("RSO")]
     [SerializeField] RSO_PlantDistance rsoPlantDist;
@@ -73,15 +57,7 @@ public class PlantManager : MonoBehaviour
 
     private void Start()
     {
-        mainRenderer.material.color = startColor;
-        outlineRenderer.material.color = outlineColor;
-
-        mainRenderer.widthMultiplier = plantThickness;
-        outlineRenderer.widthMultiplier = outlineThickness;
-
         pathPoints.Add(new PathPoint(startingPoint.position, 0));
-        mainRenderer.positionCount = 1;
-        mainRenderer.SetPosition(0, startingPoint.position);
 
         currentPoint = startingPoint.position;
     }
@@ -117,7 +93,7 @@ public class PlantManager : MonoBehaviour
                     pathPoints.Add(new PathPoint(currentPoint, rsoPlantDist.Value));
                 }
 
-                UpdatePlantVisual();
+                plantVisual.UpdatePlantVisual(GetPathPointPositions(), currentPoint, maxDistance);
 
                 isUngrowEnd = false;
             }
@@ -167,7 +143,7 @@ public class PlantManager : MonoBehaviour
                     rseOnPlantUngrow.Call();
                 }
             }
-            UpdatePlantVisual();
+            plantVisual.UpdatePlantVisual(GetPathPointPositions(), currentPoint, maxDistance);
         }
 
     }
@@ -210,7 +186,7 @@ public class PlantManager : MonoBehaviour
 
         foreach(var exitTrigger in exitTriggers)
         {
-            if (!hits.Contains(exitTrigger))
+            if (!hits.Contains(exitTrigger) && exitTrigger.isTrigger)
             {
                 _OnTriggerExit2D(exitTrigger);
                 triggers.Remove(exitTrigger);
@@ -243,27 +219,6 @@ public class PlantManager : MonoBehaviour
         Debug.Log("Trigger EXIT : " + col.name);
     }
 
-    void UpdatePlantVisual()
-    {
-        Vector3[] positions = GetZigZagPathPositions();
-
-        outlineRenderer.positionCount = positions.Length + 1;
-        mainRenderer.positionCount = positions.Length + 1;
-
-        Vector3 offset = Vector3.forward * 0.0001f; // Petit décalage en Z
-
-        for (int i = 0; i < positions.Length; i++)
-        {
-            outlineRenderer.SetPosition(i, positions[i] + offset); // décalé
-            mainRenderer.SetPosition(i, positions[i]);             // normal
-        }
-
-        outlineRenderer.SetPosition(outlineRenderer.positionCount - 1, currentPoint + offset);
-        mainRenderer.SetPosition(mainRenderer.positionCount - 1, currentPoint);
-
-        mainRenderer.material.color = Color.Lerp(startColor, endColor, rsoPlantDist.Value / maxDistance);
-    }
-
     Vector3[] GetPathPointPositions()
     {
         Vector3[] positions = new Vector3[pathPoints.Count];
@@ -272,33 +227,5 @@ public class PlantManager : MonoBehaviour
             positions[i] = pathPoints[i].position;
         }
         return positions;
-    }
-
-    Vector3[] GetZigZagPathPositions()
-    {
-        Vector3[] basePositions = GetPathPointPositions();
-        Vector3[] zigzagPositions = new Vector3[basePositions.Length];
-
-        float time = Time.time * zigzagSpeed; // <- on anime avec le temps ici
-
-        for (int i = 0; i < basePositions.Length; i++)
-        {
-            Vector3 pos = basePositions[i];
-
-            if (i > 0)
-            {
-                Vector2 dir = (basePositions[i] - basePositions[i - 1]).normalized;
-                Vector2 normal = new Vector2(-dir.y, dir.x); // perpendiculaire
-
-                // Décalage dynamique animé avec le temps
-                float offset = Mathf.Sin(i * zigzagFrequency + time) * zigzagAmplitude;
-
-                pos += (Vector3)(normal * offset);
-            }
-
-            zigzagPositions[i] = pos;
-        }
-
-        return zigzagPositions;
     }
 }

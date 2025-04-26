@@ -3,8 +3,11 @@ using UnityEngine.Events;
 
 public class Activable : MonoBehaviour
 {
+    bool isActive = false;
+
     [Header("Settings")]
-    [SerializeField] UnityEvent _event;
+    [SerializeField] UnityEvent enableEvent;
+    [SerializeField] UnityEvent disableEvent;
 
     [Header("References")]
     [SerializeField] Triggerable[] triggerables;
@@ -18,6 +21,7 @@ public class Activable : MonoBehaviour
         foreach (var item in triggerables)
         {
             item.OnPlantEnter += CheckTriggerable;
+            item.OnPlantExit += CheckTriggerable;
         }
     }
 
@@ -25,9 +29,18 @@ public class Activable : MonoBehaviour
     {
         for (int i = 0; i < triggerables.Length; i++)
         {
-            if (!triggerables[i].isActive) return;
+            if (!triggerables[i].isActive)
+            {
+                if(isActive)
+                {
+                    disableEvent?.Invoke();
+                    isActive = false;
+                }
+                return;
+            }
         }
         
-        _event?.Invoke();
+        isActive = true;
+        enableEvent?.Invoke();
     }
 }
