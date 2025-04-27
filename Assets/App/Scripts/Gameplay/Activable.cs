@@ -11,6 +11,7 @@ public class Activable : MonoBehaviour
 
     [Header("References")]
     [SerializeField] Triggerable[] triggerables;
+    [SerializeField] ParticleSystem[] openParticles;
 
     //[Header("RSO")]
     //[Header("RSE")]
@@ -39,13 +40,17 @@ public class Activable : MonoBehaviour
                 return;
             }
         }
-        
+        for (int i = 0; i < openParticles.Length; i++) { openParticles[i].Play(); }
+
+
         isActive = true;
         enableEvent?.Invoke();
     }
 
     public void Enable()
     {
+        for (int i = 0; i < openParticles.Length; i++) { openParticles[i].Play(); }
+
         isActive = true;
         enableEvent?.Invoke();
     }

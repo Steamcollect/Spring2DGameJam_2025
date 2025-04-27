@@ -96,7 +96,7 @@ public class PlantVisual : MonoBehaviour
         for (int i = 0; i < 30; i++)
         {
             branchQueue.Enqueue(CreateBranch());
-            leafsQueue.Enqueue(CreateLeaf());
+            //leafsQueue.Enqueue(CreateLeaf());
         }
     }
 
@@ -123,7 +123,7 @@ public class PlantVisual : MonoBehaviour
         outlineRenderer.material.color = outlineGradient.Evaluate(currentDistPercentage);
         branchMat.color = branchGradient.Evaluate(currentDistPercentage);
 
-        UpdateLeaf(pathPoints, maxDistance);
+        //UpdateLeaf(pathPoints, maxDistance);
         UpdateBranches(positions, maxDistance);
     }
 
@@ -227,6 +227,9 @@ public class PlantVisual : MonoBehaviour
         branch.branch.Setup(currentDistPercentage, branchMat);
 
         branch.branch.transform.position = position;
+        branch.branch.transform.position = new Vector3(branch.branch.transform.position.x, branch.branch.transform.position.y, 1);
+
+
         if (Random.value < .5f) normal = -normal;
         branch.branch.transform.up = normal;
 

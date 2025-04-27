@@ -6,7 +6,10 @@ public class Triggerable : MonoBehaviour
     [Header("Settings")]
     public bool isActive = false;
 
-    //[Header("References")]
+    [Header("References")]
+    [SerializeField] ParticleSystem[] destroyParticles;
+    [SerializeField] CircleAnim circle;
+    [SerializeField] GameObject visual;
 
     //[Header("RSO")]
     //[Header("RSE")]
@@ -14,4 +17,32 @@ public class Triggerable : MonoBehaviour
 
     public Action OnPlantEnter;
     public Action OnPlantExit;
+
+    private void Start()
+    {
+        OnPlantEnter += _OnEnter;
+        OnPlantExit += _OnExit;
+    }
+
+    void _OnEnter()
+    {
+        if (visual == null) return;
+        foreach (var item in destroyParticles)
+        {
+            item.Play();
+        }
+            circle?.Open();
+        visual?.SetActive(false);
+    }
+    void _OnExit()
+    {
+        if (visual == null) return;
+
+        foreach (var item in destroyParticles)
+        {
+            item.Play();
+        }
+            circle?.Close();
+        visual?.SetActive(true);
+    }
 }

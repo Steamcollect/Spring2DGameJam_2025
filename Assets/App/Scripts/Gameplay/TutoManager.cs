@@ -43,6 +43,8 @@ public class TutoManager : MonoBehaviour
     {
         if(steps == TutoSteps.Grow)
         {
+            steps = TutoSteps.Ungrow;
+
             Utils.Delay(this, () =>
             {
                 growCircle.Open();
@@ -52,14 +54,15 @@ public class TutoManager : MonoBehaviour
                     ungrowTutoTxt.DOFade(1, 1);
                 });
             }, 1.5f);
-
-            steps = TutoSteps.Ungrow;
         }
     }
+
     void OnUngrow()
     {
         if (steps == TutoSteps.Ungrow)
         {
+            steps = TutoSteps.End;
+
             Utils.Delay(this, () =>
             {
                     ungrowCircle.Open();
@@ -68,9 +71,6 @@ public class TutoManager : MonoBehaviour
                     door.Enable();
                 });
             }, 1.5f);
-
-            steps = TutoSteps.End;
         }
-
     }
 }

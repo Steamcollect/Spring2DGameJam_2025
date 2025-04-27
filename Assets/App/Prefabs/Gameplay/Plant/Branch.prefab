@@ -50,7 +50,7 @@ MonoBehaviour:
   pointsCount: {x: 15, y: 20}
   amplitude: {x: 0.1, y: 0.1}
   frequency: {x: 0.8, y: 1.2}
-  whidth: {x: 0.1, y: 0.3}
+  whidth: {x: 0.15, y: 0.35}
   leafPrefab: {fileID: 4372474412896740729, guid: 0398f94fc30f0aa4cabc0cb32563e4fa, type: 3}
   branchRenderer: {fileID: 1218886377519775022}
 --- !u!120 &1218886377519775022

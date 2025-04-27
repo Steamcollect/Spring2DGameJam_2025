@@ -6,6 +6,33 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/EliotTest.unity
-    guid: 8c9cfa26abfee488c85f1582747f6a02
+    path: Assets/Scenes/Level1.unity
+    guid: 175f1b5144b2c50459a5699d90aa1d2b
+  - enabled: 1
+    path: Assets/Scenes/Level2.unity
+    guid: 43a9450714105104cb570c139a7d9e27
+  - enabled: 1
+    path: Assets/Scenes/Level3.unity
+    guid: c8ada8c353ed059469f4d05c0150b0fb
+  - enabled: 1
+    path: Assets/Scenes/Level4.unity
+    guid: 3aae9f2f66703224f89bc7ad65fbd26a
+  - enabled: 1
+    path: Assets/Scenes/Level5.unity
+    guid: 913850568ac057e46b6f87cb4c56afd4
+  - enabled: 1
+    path: Assets/Scenes/Level6.unity
+    guid: 38743e4a48053df40855886008111be4
+  - enabled: 1
+    path: Assets/Scenes/Level7.unity
+    guid: d3ab8fdce40426b4799186269088be9c
+  - enabled: 1
+    path: Assets/Scenes/Level8.unity
+    guid: 36dbc2d55d99b7a4c8d8a0ebdf58bc6f
+  - enabled: 1
+    path: Assets/Scenes/Level9.unity
+    guid: 6194f4f235b66fd4281947a4263b5363
+  - enabled: 1
+    path: Assets/Scenes/Level10.unity
+    guid: 66b996b2db8827841ace8499c295e21b
   m_configObjects: {}
