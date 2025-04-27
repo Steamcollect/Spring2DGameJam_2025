@@ -27,4 +27,9 @@ public class FadePanel : MonoBehaviour
             SceneManager.LoadScene(sceneName);
         }, 1.2f);
     }
+
+    public void ReloadScene()
+    {
+        LoadNextScene(SceneManager.GetActiveScene().name);
+    }
 }
