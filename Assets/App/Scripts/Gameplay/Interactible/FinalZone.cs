@@ -1,9 +1,11 @@
+using Unity.Properties;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class FinalZone : Triggerable
 {
     [SerializeField, SceneName] string levelToLoad;
+
+    bool canLoad = true;
 
     private void Awake()
     {
@@ -12,6 +14,8 @@ public class FinalZone : Triggerable
 
     public void OnEnter()
     {
-        SceneManager.LoadScene(levelToLoad);
+        if (!canLoad) return;
+        FadePanel.instance.LoadNextScene(levelToLoad);
+        canLoad = false;
     }
 }

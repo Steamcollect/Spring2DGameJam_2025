@@ -10,6 +10,7 @@ public class Triggerable : MonoBehaviour
     [SerializeField] ParticleSystem[] destroyParticles;
     [SerializeField] CircleAnim circle;
     [SerializeField] GameObject visual;
+    [SerializeField] SoundComponent soundComponent;
 
     //[Header("RSO")]
     //[Header("RSE")]
@@ -26,6 +27,8 @@ public class Triggerable : MonoBehaviour
 
     void _OnEnter()
     {
+        if (soundComponent != null) soundComponent.PlayClip();
+
         if (visual == null) return;
         foreach (var item in destroyParticles)
         {
@@ -36,6 +39,8 @@ public class Triggerable : MonoBehaviour
     }
     void _OnExit()
     {
+        if (soundComponent != null) soundComponent.PlayClip();
+
         if (visual == null) return;
 
         foreach (var item in destroyParticles)

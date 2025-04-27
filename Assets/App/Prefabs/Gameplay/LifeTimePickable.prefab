@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 4913388106274150335}
   - component: {fileID: 3076501084982783116}
   - component: {fileID: 8929489312923901283}
+  - component: {fileID: 6689358874130817804}
   m_Layer: 0
   m_Name: LifeTimePickable
   m_TagString: Untagged
@@ -95,6 +96,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isActive: 0
+  destroyParticles: []
+  circle: {fileID: 0}
+  visual: {fileID: 0}
+  soundComponent: {fileID: 6689358874130817804}
   lifeTimeGiven: 10
   visualGO: {fileID: 5430148368253101199}
   destroyParticle: {fileID: 7279334987707773332}
@@ -120,6 +125,25 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &6689358874130817804
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2156923628404290884}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ffa20ac694ee244aa83e7f23dcee47b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sound:
+    clips:
+    - {fileID: 8300000, guid: 0f68bd59b7f28e44aa3569743b28b8bd, type: 3}
+    - {fileID: 8300000, guid: 995c292b51a1cd242b6ccac0e577fbcd, type: 3}
+    volumeMultiplier: 0.4
+    spatialBlend: 0
+  rsePlayClipAt: {fileID: 11400000, guid: eb8f82a3b87a0d64caa32d0e95498bf3, type: 2}
 --- !u!1 &5290629686003196230
 GameObject:
   m_ObjectHideFlags: 0
@@ -5222,12 +5246,16 @@ PrefabInstance:
       value: 65535
       objectReference: {fileID: 0}
     - target: {fileID: 6380919863549258207, guid: 4c301d3871c13214883f1ba5b4663824, type: 3}
+      propertyPath: color.ctime2
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6380919863549258207, guid: 4c301d3871c13214883f1ba5b4663824, type: 3}
       propertyPath: color.key0.b
-      value: 0.94021946
+      value: 0.89245284
       objectReference: {fileID: 0}
     - target: {fileID: 6380919863549258207, guid: 4c301d3871c13214883f1ba5b4663824, type: 3}
       propertyPath: color.key0.g
-      value: 0.745283
+      value: 0.53396225
       objectReference: {fileID: 0}
     - target: {fileID: 6380919863549258207, guid: 4c301d3871c13214883f1ba5b4663824, type: 3}
       propertyPath: color.key0.r
@@ -5235,15 +5263,31 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6380919863549258207, guid: 4c301d3871c13214883f1ba5b4663824, type: 3}
       propertyPath: color.key1.b
-      value: 0.94021946
+      value: 0.89245284
       objectReference: {fileID: 0}
     - target: {fileID: 6380919863549258207, guid: 4c301d3871c13214883f1ba5b4663824, type: 3}
       propertyPath: color.key1.g
-      value: 0.745283
+      value: 0.53396225
       objectReference: {fileID: 0}
     - target: {fileID: 6380919863549258207, guid: 4c301d3871c13214883f1ba5b4663824, type: 3}
       propertyPath: color.key1.r
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6380919863549258207, guid: 4c301d3871c13214883f1ba5b4663824, type: 3}
+      propertyPath: color.key2.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6380919863549258207, guid: 4c301d3871c13214883f1ba5b4663824, type: 3}
+      propertyPath: color.key2.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6380919863549258207, guid: 4c301d3871c13214883f1ba5b4663824, type: 3}
+      propertyPath: color.key2.r
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6380919863549258207, guid: 4c301d3871c13214883f1ba5b4663824, type: 3}
+      propertyPath: color.m_NumColorKeys
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7602171117309084559, guid: 4c301d3871c13214883f1ba5b4663824, type: 3}
       propertyPath: m_Name

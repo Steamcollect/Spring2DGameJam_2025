@@ -17,9 +17,11 @@ public class PlantManager : MonoBehaviour
 
     [Space(10)]
     [SerializeField] float maxDistance;
+    float startingMaxDist;
 
     List<PathPoint> pathPoints = new();
     Vector3 currentPoint;
+    Vector3 lastFramePoint;
 
     [System.Serializable]
     struct PathPoint
@@ -44,6 +46,11 @@ public class PlantManager : MonoBehaviour
 
     [Header("References")]
     [SerializeField] PlantVisual plantVisual;
+
+    [SerializeField] SoundComponent touchSound;
+
+    public AnimationCurve soundPowerPerDist;
+    public AudioSource audioSource;
 
     [Header("RSO")]
     [SerializeField] RSO_PlantDistance rsoPlantDist;
@@ -73,13 +80,20 @@ public class PlantManager : MonoBehaviour
         pathPoints.Add(new PathPoint(startingPoint.position + posOffset, 0));
         rsoPlantDist.Value = 0;
 
+        startingMaxDist = maxDistance;
+
         currentPoint = startingPoint.position + posOffset;
     }
 
     private void Update()
     {
+        lastFramePoint = currentPoint;
         MouseLeftClick();
         MouseRightClick();
+
+        audioSource.volume = soundPowerPerDist.Evaluate(Vector2.Distance(lastFramePoint, currentPoint));
+
+        if(maxDistance < startingMaxDist) maxDistance = startingMaxDist;
     }
 
     void MouseLeftClick()
@@ -191,6 +205,7 @@ public class PlantManager : MonoBehaviour
         return b;
     }
 
+    HashSet<Collider2D> wallsTouch = new();
     void CheckCollisionEnter()
     {
         exitTriggers.Clear();
@@ -199,17 +214,28 @@ public class PlantManager : MonoBehaviour
 
         foreach (var hit in hits)
         {
-            if (!hit.isTrigger) continue;
-
             if (!triggers.Contains(hit))
             {
                 _OnTriggerEnter2D(hit);
                 triggers.Add(hit);
             }
         }
+
+        hits = Physics2D.OverlapCircleAll(currentPoint, .2f);
+
+        foreach (var hit in hits)
+        {
+            if(!hit.isTrigger && !wallsTouch.Contains(hit))
+            {
+                wallsTouch.Add(hit);
+                touchSound.PlayClip();
+            }
+        }
+        wallsTouch = hits.ToHashSet();
     }
     void CheckCollisionExit()
     {
+        wallsTouch.Clear();
         Collider2D[] hits = Physics2D.OverlapPointAll(currentPoint);
 
         foreach(var exitTrigger in exitTriggers)
