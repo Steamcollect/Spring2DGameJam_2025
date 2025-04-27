@@ -15,6 +15,8 @@ public class TutoManager : MonoBehaviour
     [SerializeField] CircleAnim growCircle;
     [SerializeField] CircleAnim ungrowCircle;
 
+    public SoundComponent wooshSound;
+
     //[Header("RSO")]
     //[Header("RSE")]
     //[Header("RSF")]
@@ -48,6 +50,7 @@ public class TutoManager : MonoBehaviour
             Utils.Delay(this, () =>
             {
                 growCircle.Open();
+                wooshSound.PlayClip();
 
                 growTutoTxt.DOFade(0, 1).OnComplete(() =>
                 {
@@ -65,7 +68,9 @@ public class TutoManager : MonoBehaviour
 
             Utils.Delay(this, () =>
             {
-                    ungrowCircle.Open();
+                ungrowCircle.Open();
+                wooshSound.PlayClip();
+
                 ungrowTutoTxt.DOFade(0, 1).OnComplete(() =>
                 {
                     door.Enable();
