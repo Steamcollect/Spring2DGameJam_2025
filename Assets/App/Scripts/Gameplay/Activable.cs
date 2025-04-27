@@ -44,6 +44,12 @@ public class Activable : MonoBehaviour
         enableEvent?.Invoke();
     }
 
+    public void Enable()
+    {
+        isActive = true;
+        enableEvent?.Invoke();
+    }
+
     public void EnablePrintDebug() { print("Enable"); }
     public void DisablePrintDebug() { print("Disable"); }
 }

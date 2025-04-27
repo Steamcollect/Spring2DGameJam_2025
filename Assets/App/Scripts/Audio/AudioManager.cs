@@ -32,6 +32,8 @@ public class AudioManager : MonoBehaviour
 
     private void Start()
     {
+        DontDestroyOnLoad(this);
+
         SetupParent();
 
         // Create Audio Object
@@ -87,6 +89,8 @@ public class AudioManager : MonoBehaviour
             audioSource.volume = playlist.volumeMultiplier;
             audioSource.loop = playlist.isLooping;
             audioSource.outputAudioMixerGroup = musicMixerGroup;
+
+            audioSource.transform.SetParent(_playlistParent);
 
             audioSource.clip = playlist.clip;
             audioSource.Play();

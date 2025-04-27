@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -51,6 +52,12 @@ public class PlantManager : MonoBehaviour
     [SerializeField] RSE_OnPlantUngrow rseOnPlantUngrow;
 
     //[Header("RSF")]
+
+    bool isGrowing = false;
+    bool isUngrowing = false;
+
+    public Action OnGrow;
+    public Action OnUnGrow;
 
     public static PlantManager instance;
 
@@ -109,6 +116,13 @@ public class PlantManager : MonoBehaviour
                 Vector2 dir = desirePos - (Vector2)currentPoint;
                 movableTouch.Move(dir);
             }
+
+            if (!isGrowing)
+            {
+                isUngrowing = false;
+                isGrowing = true;
+                OnGrow?.Invoke();
+            }
         }
 
     }
@@ -151,6 +165,13 @@ public class PlantManager : MonoBehaviour
                 }
             }
             plantVisual.UpdatePlantVisual(GetPathPointPositions(), currentPoint, maxDistance);
+
+            if (!isUngrowing)
+            {
+                isUngrowing = true;
+                isGrowing = false;
+                OnUnGrow?.Invoke();
+            }
         }
 
     }

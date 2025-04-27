@@ -9,6 +9,10 @@ public class MusicManager : MonoBehaviour
 
     private void Start()
     {
+        Invoke("LateStart", .1f);
+    }
+    void LateStart()
+    {
         audioManager.SetupPlaylist(playlists);
     }
 }
